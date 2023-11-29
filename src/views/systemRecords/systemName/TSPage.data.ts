@@ -40,14 +40,14 @@ export const searchFormSchema: FormSchema[] = [
   {
     label: '系统名称',
     field: 'name',
-    component: 'Input',
-    //colProps: {span: 6},
+    component: 'JInput',
+    colProps: { span: 6 },
   },
   {
     label: '系统地址',
     field: 'ipaddress',
-    component: 'Input',
-    //colProps: {span: 6},
+    component: 'JInput',
+    colProps: { span: 6 },
   },
   {
     label: '账号类型',

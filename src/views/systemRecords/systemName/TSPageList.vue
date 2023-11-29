@@ -7,7 +7,7 @@
           <a-col :lg="6">
             <a-form-item name="name">
               <template #label><span title="系统名称">系统名称</span></template>
-              <a-input placeholder="请输入系统名称" v-model:value="queryParam.name" />
+              <a-input placeholder="请输入系统名称" v-model:value="queryParam.name"/>
             </a-form-item>
           </a-col>
           <a-col :lg="6">
