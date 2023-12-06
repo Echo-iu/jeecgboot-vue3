@@ -5,9 +5,8 @@
       <a-form ref="formRef" @keyup.enter.native="searchQuery" :model="queryParam" :label-col="labelCol" :wrapper-col="wrapperCol">
         <a-row :gutter="24">
           <a-col :lg="6">
-            <a-form-item name="name">
-              <template #label><span title="系统名称">系统名称</span></template>
-              <a-input placeholder="请输入系统名称" v-model:value="queryParam.name"/>
+            <a-form-item label="系统名称">
+              <a-input placeholder="请输入系统名称" v-model:value="queryParam.name" />
             </a-form-item>
           </a-col>
           <a-col :lg="6">
@@ -16,26 +15,14 @@
               <a-input placeholder="请输入系统地址" v-model:value="queryParam.ipaddress" />
             </a-form-item>
           </a-col>
-          <template v-if="toggleSearchStatus">
-            <a-col :lg="6">
-              <a-form-item name="type">
-                <template #label><span title="账号类型">账号类型</span></template>
-                <j-dict-select-tag placeholder="请选择账号类型" v-model:value="queryParam.type" dictCode="tyoe" />
-              </a-form-item>
-            </a-col>
-          </template>
-          <a-col :xl="6" :lg="7" :md="8" :sm="24">
-            <span style="float: left; overflow: hidden" class="table-page-search-submitButtons">
-              <a-col :lg="6">
-                <a-button type="primary" preIcon="ant-design:search-outlined" @click="searchQuery">查询</a-button>
-                <a-button type="primary" preIcon="ant-design:reload-outlined" @click="searchReset" style="margin-left: 8px">重置</a-button>
-                <a @click="toggleSearchStatus = !toggleSearchStatus" style="margin-left: 8px">
-                  {{ toggleSearchStatus ? '收起' : '展开' }}
-                  <Icon :icon="toggleSearchStatus ? 'ant-design:up-outlined' : 'ant-design:down-outlined'" />
-                </a>
-              </a-col>
-            </span>
+          <a-col :lg="6">
+            <a-form-item name="type">
+              <template #label><span title="账号类型">账号类型</span></template>
+              <j-dict-select-tag placeholder="请选择账号类型" v-model:value="queryParam.type" dictCode="tyoe" />
+            </a-form-item>
           </a-col>
+          <a-button type="primary" preIcon="ant-design:search-outlined" @click="searchQuery">查询</a-button>
+          <a-button type="primary" preIcon="ant-design:reload-outlined" @click="searchReset" style="margin-left: 8px">重置</a-button>
         </a-row>
       </a-form>
     </div>
@@ -78,7 +65,7 @@
   import { BasicTable, useTable, TableAction } from '@/components/Table';
   import { useListPage } from '@/hooks/system/useListPage';
   import { columns } from './TSPage.data';
-  import { list, deleteOne, batchDelete, getImportUrl, getExportUrl } from './TSPage.api';
+  import { list, deleteOne, batchDelete, getImportUrl, getExportUrl, getSystemName } from './TSPage.api';
   import TSPageModal from './components/TSPageModal.vue';
   import { useUserStore } from '@/store/modules/user';
   import JDictSelectTag from '@/components/Form/src/jeecg/components/JDictSelectTag.vue';
@@ -146,19 +133,24 @@
   /**
    * 前往系统页面
    */
-  function handGo(record: Recordable) {
-    //获取record表单参数IP地址
-    const urls = new Proxy(record, {
-      get: (target, key) => {
-        if (key === 'ipAddress') {
-          return target[key].toUpperCase();
-        } else {
-          return target[key];
-        }
-      },
-    });
-    window.open(urls.ipaddress, '_blank');
+  function handGo(record) {
+    getSystemName(record);
   }
+  // function handGo(record: Recordable) {
+  //   debugger;
+  //   getSystemName({ id: record.id });
+  // }
+  // function handGo(record: Recordable) {
+  //   //获取record表单参数IP地址
+  //   const urls = new Proxy(record, {
+  //     get: (target, key) => {
+  //       if (key === 'ipAddress') {
+  //         return target[key].toUpperCase();
+  //       }
+  //     },
+  //   });
+  //   window.open(urls.ipaddress, '_blank');
+  // }
   /**
    * 详情
    */
@@ -193,6 +185,10 @@
    */
   function getTableAction(record) {
     return [
+      {
+        label: '详情',
+        onClick: handleDetail.bind(null, record),
+      },
       {
         label: '编辑',
         onClick: handleEdit.bind(null, record),

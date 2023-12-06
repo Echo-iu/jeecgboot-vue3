@@ -24,7 +24,17 @@
         </a-col>
         <a-col :span="24">
           <a-form-item label="密码" v-bind="validateInfos.password">
-            <a-input v-model:value="formData.password" placeholder="请输入密码" :disabled="disabled" />
+            <a-input v-model:value="formData.password" type="password" placeholder="请输入密码" :disabled="disabled" />
+          </a-form-item>
+        </a-col>
+        <a-col :span="24">
+          <a-form-item label="账号定位标签" v-bind="validateInfos.accountLable">
+            <a-input v-model:value="formData.accountLable" placeholder="请输入账号定位标签" :disabled="disabled" />
+          </a-form-item>
+        </a-col>
+        <a-col :span="24">
+          <a-form-item label="密码定位标签" v-bind="validateInfos.passwordLable">
+            <a-input v-model:value="formData.passwordLable" placeholder="请输入密码定位标签" :disabled="disabled" />
           </a-form-item>
         </a-col>
       </a-row>
@@ -68,6 +78,8 @@
     type: [{ required: true, message: '请输入账号类型!' }],
     account: [{ required: true, message: '请输入用户名!' }],
     password: [{ required: true, message: '请输入密码!' }],
+    passwordLable: [{ required: true, message: '请输入账号定位标签!' }],
+    accountLable: [{ required: true, message: '请输入密码定位标签!' }],
   };
   const { resetFields, validate, validateInfos } = useForm(formData, validatorRules, { immediate: true });
 

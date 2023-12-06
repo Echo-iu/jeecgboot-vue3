@@ -1,5 +1,5 @@
 import { defHttp } from '@/utils/http/axios';
-import { useMessage } from "@/hooks/web/useMessage";
+import { useMessage } from '@/hooks/web/useMessage';
 
 const { createConfirm } = useMessage();
 
@@ -11,6 +11,7 @@ enum Api {
   deleteBatch = '/systemRecords/tSPage/deleteBatch',
   importExcel = '/systemRecords/tSPage/importExcel',
   exportXls = '/systemRecords/tSPage/exportXls',
+  systemName = '/systemRecords/tSPage/systemName',
 }
 
 /**
@@ -31,14 +32,21 @@ export const getImportUrl = Api.importExcel;
 export const list = (params) => defHttp.get({ url: Api.list, params });
 
 /**
+ * 前往目标网页
+ */
+// export const getSystemName = (params) => defHttp.put({ url: Api.systemName, params });
+export const getSystemName = (params, handleSuccess) => {
+  return defHttp.put({ url: Api.systemName, params }).then(() => {
+    handleSuccess();
+  });
+};
+/**
  * 删除单个
  * @param params
  * @param handleSuccess
  */
-export const deleteOne = (params, handleSuccess) => {
-  return defHttp.delete({ url: Api.deleteOne, params }, { joinParamsToUrl: true }).then(() => {
-    handleSuccess();
-  });
+export const deleteOne = (params) => {
+  return defHttp.delete({ url: Api.deleteOne, params }, { joinParamsToUrl: true }).then(() => {});
 };
 
 /**
@@ -67,6 +75,6 @@ export const batchDelete = (params, handleSuccess) => {
  * @param isUpdate
  */
 export const saveOrUpdate = (params, isUpdate) => {
-  let url = isUpdate ? Api.edit : Api.save;
+  const url = isUpdate ? Api.edit : Api.save;
   return defHttp.post({ url: url, params }, { isTransformResponse: false });
 };
